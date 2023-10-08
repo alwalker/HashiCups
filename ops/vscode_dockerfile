@@ -1,0 +1,40 @@
+ARG FEDORA_VERSION=38
+ARG FEDORA_ARCH=x86_64
+FROM registry.fedoraproject.org/fedora:$FEDORA_VERSION-$FEDORA_ARCH
+
+RUN dnf install -y --refresh \
+    dnf-plugins-core \
+    ncurses \
+    nc \
+    less \
+    gcc \
+    glibc \
+    libgcc \
+    libstdc++ \
+    graphviz \
+    git \
+    python \
+    ca-certificates \
+    tar \
+    wget \
+    tree \
+    vim \
+    unzip \
+    jq \
+    lsof \
+    bind-utils
+
+WORKDIR /src
+ARG GO_VERSION=1.21.1
+RUN wget -q "https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz" -O /src/go.tar.gz \
+    && tar -C /usr/local -xzf go.tar.gz \
+    && rm /src/go.tar.gz \
+    && echo 'export PATH=$PATH:/usr/local/go/bin' >> $HOME/.bashrc \
+    && echo 'export GOPATH=$HOME/go' >> $HOME/.bashrc \
+    && echo 'export PATH=$PATH:$GOPATH/bin' >> $HOME/.bashrc
+
+COPY .terraformrc /root/
+RUN dnf config-manager --add-repo https://rpm.releases.hashicorp.com/fedora/hashicorp.repo \
+    && dnf -y install terraform
+
+RUN dnf clean all

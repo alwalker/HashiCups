@@ -1,0 +1,17 @@
+{
+    "image": "vscode_tf_provider_ex",
+    "remoteUser": "root",
+    "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,z,type=bind",
+    "workspaceFolder": "/workspace",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "hashicorp.terraform",
+                "hashicorp.hcl",
+                "golang.go",
+                "shardulm94.trailing-spaces",
+                "streetsidesoftware.code-spell-checker"
+            ]
+        }
+    }
+}
